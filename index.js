@@ -17,7 +17,7 @@ async function run() {
     try {
         await client.connect();
         console.log('Connected')
-        const database = client.db('assingment-11')
+        const database = client.db('assingment-11-swerver-site')
         const servicesCollection = database.collection('services')
 
         //get api
