@@ -19,12 +19,24 @@ async function run() {
         console.log('Connected')
         const database = client.db('assingment-11-swerver-site')
         const servicesCollection = database.collection('services')
+        const orderCollection = database.collection('orders')
 
         //get api
         app.get('/services', async (req, res) => {
             const cursor = servicesCollection.find({})
             const services = await cursor.toArray();
             res.send(services)
+        })
+        // Get Orders
+        app.get('/orders', async (req, res) => {
+            const email = req.query.email
+            let query = {}
+            if (email) {
+                query = { email: email }
+            }
+            const cursor = orderCollection.find(query)
+            const orders = await cursor.toArray()
+            res.json(orders)
         })
         // GET Single Service
         app.get('/services/:id', async (req, res) => {
@@ -43,6 +55,12 @@ async function run() {
             console.log(result);
             res.json(result)
         });
+        // Post Orders
+        app.post('/orders', async (req, res) => {
+            const order = req.body
+            const ans = await orderCollection.insertOne(order)
+            res.json(ans)
+        })
         //delete api
         app.delete('/services/:id', async (req, res) => {
             const id = req.params.id;
